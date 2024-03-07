@@ -4,4 +4,7 @@
 
 ### 脚本原理详见：https://github.com/KDXF-BOOM/studentpad-research/blob/main/README.md
 
+#### 目前进度:
+#### 期望目标：
+
 
