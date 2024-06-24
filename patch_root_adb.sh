@@ -270,7 +270,6 @@ else
     echo 
 fi
 
-sudo rm .Temp.log
 sudo rm -r ./Temp
 
 echo '************************************************************'
