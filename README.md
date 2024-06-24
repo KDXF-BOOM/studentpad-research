@@ -1,12 +1,45 @@
-# 科大讯飞AI学习机刷入Magisk，System.img半自动修改脚本
-## 作者因正在上学,脚本更新非常非常非常非常缓慢,请见谅
-### ！！！这个脚本目前非常不完善，如有人希望使用这个脚本，请至少等到脚本更新到Releases 的 1.0正式版 ！！！
-### 为确认脚本功能正常运作，请在root身份下或使用sudo运行
-### 脚本运行过程提示文本使用英语是为了兼容性考虑,没有别的意思(套盾
+# 科大讯飞AI学习机展讯机型Root工具：System.img与Vendor.img的半自动合成、修改脚本（分开的两个脚本）
 
-### 脚本原理详见：https://github.com/KDXF-BOOM/studentpad-research/blob/main/README.md
+## 注意事项
 
+**为确认脚本功能正常运作，请在  x86_64(amd64)架构的Ubuntu Linux on WSL2环境下  使用sudo运行**
 
-#### 脚本目标功能:
+**脚本运行过程提示文本使用英语是为了兼容性考虑,没有别的意思(套盾**
 
+**脚本原理详见[Root教程](https://github.com/KDXF-BOOM/studentpad-research#%E8%8E%B7%E5%8F%96%E5%AD%A6%E4%B9%A0%E6%9C%BA%E5%B1%95%E8%AE%AF%E7%B3%BB%E6%9C%BA%E5%9E%8B%E7%9A%84root%E5%8D%B3%E5%88%B7%E5%85%A5magisk)**
 
+**我们欢迎各位开PR来提出并解决该脚本中存在的一些不足**
+
+**本文假定你已经学会了如何装好WSL2 Ubuntu环境，否则请尝试 ~~往嫩豆腐上撞击头部直至失去生命体征(bushi)~~ 自行应用搜索引擎，AI（如ChatGPT）解决问题**
+
+## 可实现的功能
+
+* 由全量包批量合成product,system,vendor三个分区(使用了[sdat2img](https://www.bing.com/ck/a?!&&p=4802a638da3b7b4fJmltdHM9MTcxOTE4NzIwMCZpZ3VpZD0zYjZhYjQ2Yy00ZTUzLTZmMzYtMjBjYy1hMDQ0NGY2YTZlNzUmaW5zaWQ9NTQ3MQ&ptn=3&ver=2&hsh=3&fclid=3b6ab46c-4e53-6f36-20cc-a0444f6a6e75&psq=sdat2img&u=a1aHR0cHM6Ly9naXRodWIuY29tL3hwaXJ0L3NkYXQyaW1n&ntb=1)项目)
+* 模拟学习机在安卓Recovery环境下的OTA修补分区功能(使用了[imgpatchtools](https://github.com/erfanoabdi/imgpatchtools)项目)
+* 实现对 科大讯飞AI学习机展讯机型 的Root镜像合成
+
+## 如何使用？
+
+* 在Windows下，将本仓库进行克隆，然后使用如下命令切换分支
+
+```
+git checkout System-Image-Patch-Script
+```
+
+* 在Windows上下载到OTA全包，最好是用Nanazip打开(它支持brotil压缩，可以直接解压.br文件)，将9个带"product","vendor","system"字样的文件全给它解压到你克隆的仓库下（如果有.br文件，你需要打开它，然后把它里面的.new文件复制到仓库目录下）
+* 在仓库目录的窗口中，将光标拖到导航栏下空白处，利用Shift+鼠标右键在当前目录打开命令窗口，执行以下命令：
+
+  ```
+  wsl -u root
+  ```
+
+  全量包——>镜像：
+
+```
+sudo ./sdat2img.sh
+```
+
+如果你已经有system,vendor,product镜像存在（或由上一步得到了），你可能会做以下两种事：
+
+* Root镜像：你需要使用 ./patch_root_adb.sh 来进行半自动化Root
+* 想要合成然后再Root：你需要去找到你下载的差分包（就是那个文件名是inc开头的），把它9个文件复制过来，然后执行 ./ota_image.sh 进行自动化合成镜像，然后如'Root镜像'步骤一样，故不阐述
